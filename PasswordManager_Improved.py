@@ -4,7 +4,7 @@ import pyperclip
 import json
 
 FONT_NAME = "Courier"
-MOST_COMMONLY_USED_EMAIL = "malkhandi.chinmay@gmail.com"
+MOST_COMMONLY_USED_EMAIL = "abc@gmail.com"
 STARTING_WEBSITE_TEXT = "www.abc.com"
 SAVED_PASSWORDS_FILE_PATH = os.path.join(
     os.getcwd(),
