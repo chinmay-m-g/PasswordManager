@@ -23,4 +23,4 @@ Steps to use:
 		1. Type the Website name and click on "Search"
 		2. If the website exists then it will give a popup with the username and password of that website.
 		
-Caution : All the Three Fields Website , Username and PAssword are all case sensitive
+Caution : All the Three Fields Website , Username and Password are all case sensitive
