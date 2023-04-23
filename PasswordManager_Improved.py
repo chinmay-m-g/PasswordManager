@@ -2,14 +2,10 @@ import os
 import random
 import pyperclip
 import json
+import argparse
 
 FONT_NAME = "Courier"
-MOST_COMMONLY_USED_EMAIL = "abc@gmail.com"
-STARTING_WEBSITE_TEXT = "www.abc.com"
-SAVED_PASSWORDS_FILE_PATH = os.path.join(
-    os.getcwd(),
-    "mypasswords.json",
-)
+
 
 # ---------------------------- PASSWORD GENERATOR ------------------------------- #
 def GenerateRandomPassword():
@@ -90,10 +86,12 @@ def read_from_json_file(SAVED_PASSWORDS_FILE_PATH, website):
 
 
 def search_details():
+    global SAVED_PASSWORDS_FILE_PATH
     read_from_json_file(SAVED_PASSWORDS_FILE_PATH, website_text_bar.get())
 
 
 def SavePasswords():
+    global SAVED_PASSWORDS_FILE_PATH
     website = website_text_bar.get()
     username = email_username_text_bar.get()
     password = password_text_bar.get()
@@ -127,51 +125,95 @@ import os
 from tkinter import *
 from tkinter import messagebox
 
-IMAGE_FILE_PATH = os.path.join(
-    os.getcwd(),
-    "logo.png",
-)
 
+# MOST_COMMONLY_USED_EMAIL = "abc@gmail.com"
+# STARTING_WEBSITE_TEXT = "www.abc.com"
+# SAVED_PASSWORDS_FILE_PATH = os.path.join(
+#    os.getcwd(),
+#    "mypasswords.json",
+# )
+# IMAGE_FILE_PATH = os.path.join(
+#    os.getcwd(),
+#    "logo.png",
+# )
 
-myscreen = Tk()
-myscreen.title("Password Generator Plus Saver")
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(
+        description="Set Default Configuration for the app"
+    )
+    parser.add_argument(
+        "--SAVED_PASSWORDS_FILE_PATH",
+        help="The Default Value of the Filtpath to be saved",
+        default=".",
+    )
+    parser.add_argument(
+        "--MOST_COMMONLY_USED_EMAIL",
+        help="""The Most Comonly UserName That you Use : (Default : 'abc@gmail.com') """,
+        default="abc@gmail.com",
+    )
+    parser.add_argument(
+        "--STARTING_WEBSITE_TEXT",
+        help="The Default Value of the Starting Website",
+        default="www.abc.com",
+    )
+    parser.add_argument(
+        "--IMAGE_FILE_PATH",
+        help="The File Path of the Logo Used",
+        default=os.path.join(os.getcwd(), "logo.png"),
+    )
+    args = parser.parse_args()
 
-myscreen.config(padx=50, pady=50)
+    global SAVED_PASSWORDS_FILE_PATH
+    SAVED_PASSWORDS_FILE_PATH = args.SAVED_PASSWORDS_FILE_PATH
 
-mycanvas = Canvas(myscreen, width=210, height=210)
-IMAGE_FILE = PhotoImage(file=IMAGE_FILE_PATH)
-mycanvas.grid(row=0, column=1)
-mycanvas.create_image(120, 100, image=IMAGE_FILE)
+    global MOST_COMMONLY_USED_EMAIL
+    MOST_COMMONLY_USED_EMAIL = args.MOST_COMMONLY_USED_EMAIL
 
-## Creating Labels
-website_label = Label(text="Website:", font=(FONT_NAME, 10, "bold"))
-email_username_label = Label(text="Email/Username:", font=(FONT_NAME, 10, "bold"))
-password_label = Label(text="Password:", font=(FONT_NAME, 10, "bold"))
-website_label.grid(row=1, column=0)
-email_username_label.grid(row=2, column=0)
-password_label.grid(row=3, column=0)
+    global STARTING_WEBSITE_TEXT
+    STARTING_WEBSITE_TEXT = args.STARTING_WEBSITE_TEXT
 
-# Creating Buttons
-add_button = Button(text="Add", width=43, command=SavePasswords)
-generate_button = Button(text="Generate Password", command=GeneratePasswordText)
-add_button.grid(row=4, column=1, columnspan=2)
-generate_button.grid(row=3, column=2)
+    global IMAGE_FILE_PATH
+    IMAGE_FILE_PATH = args.IMAGE_FILE_PATH
 
-# Generating Entry fields
-website_text_bar = Entry(width=25)
-email_username_text_bar = Entry(width=45)
-password_text_bar = Entry(width=25)
+    myscreen = Tk()
+    myscreen.title("Password Generator Plus Saver")
 
-website_text_bar.grid(row=1, column=1)
-email_username_text_bar.grid(row=2, column=1, columnspan=2)
-password_text_bar.grid(row=3, column=1)
+    myscreen.config(padx=50, pady=50)
 
-website_text_bar.focus()
-website_text_bar.insert(END, string=STARTING_WEBSITE_TEXT)
-email_username_text_bar.insert(END, string=MOST_COMMONLY_USED_EMAIL)
+    mycanvas = Canvas(myscreen, width=210, height=210)
+    IMAGE_FILE = PhotoImage(file=IMAGE_FILE_PATH)
+    mycanvas.grid(row=0, column=1)
+    mycanvas.create_image(120, 100, image=IMAGE_FILE)
 
-# Search Button
-mysearchbutton = Button(text="Search", command=search_details)
-mysearchbutton.grid(row=1, column=2)
+    ## Creating Labels
+    website_label = Label(text="Website:", font=(FONT_NAME, 10, "bold"))
+    email_username_label = Label(text="Email/Username:", font=(FONT_NAME, 10, "bold"))
+    password_label = Label(text="Password:", font=(FONT_NAME, 10, "bold"))
+    website_label.grid(row=1, column=0)
+    email_username_label.grid(row=2, column=0)
+    password_label.grid(row=3, column=0)
 
-myscreen.mainloop()
+    # Creating Buttons
+    add_button = Button(text="Add", width=43, command=SavePasswords)
+    generate_button = Button(text="Generate Password", command=GeneratePasswordText)
+    add_button.grid(row=4, column=1, columnspan=2)
+    generate_button.grid(row=3, column=2)
+
+    # Generating Entry fields
+    website_text_bar = Entry(width=25)
+    email_username_text_bar = Entry(width=45)
+    password_text_bar = Entry(width=25)
+
+    website_text_bar.grid(row=1, column=1)
+    email_username_text_bar.grid(row=2, column=1, columnspan=2)
+    password_text_bar.grid(row=3, column=1)
+
+    website_text_bar.focus()
+    website_text_bar.insert(END, string=STARTING_WEBSITE_TEXT)
+    email_username_text_bar.insert(END, string=MOST_COMMONLY_USED_EMAIL)
+
+    # Search Button
+    mysearchbutton = Button(text="Search", command=search_details)
+    mysearchbutton.grid(row=1, column=2)
+
+    myscreen.mainloop()
